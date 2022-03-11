@@ -14,12 +14,22 @@ class CC(nn.Module):
                 nn.Sigmoid()
             )
 
-    def forward(self, X):
+    def forward(self, X, y):
         Z = X
         out = []
         for i in range(self.output_size):
             z = self.network[i](Z)
-            z = (z > Variable(torch.Tensor([0.5]).to(self.device))).double() * 1
+            #z = (z > Variable(torch.Tensor([0.5]).to(self.device))).double() * 1
             out.append(z)
+            Z = torch.cat((Z, y[i]), axis= 1)
+        return torch.cat(out, axis = 1)
+
+    def predict_proba(self, X):
+        Z = X
+        out = []
+        for i in range(self.output_size):
+            z = self.network[i](Z)
+            out.append(z)
+            z = (z > Variable(torch.Tensor([0.5]).to(self.device))).double() * 1
             Z = torch.cat((Z, z), axis= 1)
         return torch.cat(out, axis = 1)
