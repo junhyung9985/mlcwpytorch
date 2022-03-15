@@ -9,10 +9,10 @@ class STA(nn.Module):
         self.sigmoid = nn.Sigmoid()
 
     def forward(self, X, train_second_layer = False):
-        out = self.network1(X)
-        out = self.sigmoid(out)
-        if train_second_layer:
-            X = torch.cat((X, out), axis= 1)
+        if !train_second_layer:
+            out = self.network1(X)
+            out = self.sigmoid(out)
+        else:
             out = self.network2(X)
             out = self.sigmoid(out)
             
